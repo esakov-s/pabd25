@@ -1,13 +1,13 @@
 """Upload selected files to S3 storage"""
 import argparse
-
+import os
 from dotenv import dotenv_values
 import boto3
 
 BUCKET_NAME = 'pabd25'
 YOUR_SURNAME = 'labintsev'
 FILE_PATH = 'models/decision_tree_reg_1.pkl'
-
+os.makedirs('models', exist_ok=True)
 config = dotenv_values(".env")
 
 
