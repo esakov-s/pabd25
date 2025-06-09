@@ -28,6 +28,9 @@ dictConfig(
 
 app = Flask(__name__)
 
+from flask_cors import CORS
+cors = CORS(app, resources={r"/api/*": {"origins": "http://localhost:5173"}})
+
 import joblib
 
 # Сохранение модели
