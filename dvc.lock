@@ -1,0 +1,23 @@
+schema: '2.0'
+stages:
+  preprocess:
+    cmd: python .\src\preprocess_data.py
+    deps:
+    - path: .\src\preprocess_data.py
+      hash: md5
+      md5: 7300ee69a4570c355d02d521465ae30d
+      size: 2688
+  train:
+    cmd: python .\src\train.py
+    deps:
+    - path: .\src\train.py
+      hash: md5
+      md5: 8f96ee67954ac47b121e5d2b02dfb792
+      size: 1490
+  test:
+    cmd: python .\src\test.py
+    deps:
+    - path: .\src\test.py
+      hash: md5
+      md5: 3d0620570b7099bd6c536d1a9968053c
+      size: 2600
