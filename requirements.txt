@@ -10,3 +10,4 @@ flask-cors
 boto3
 python-dotenv
 flask_httpauth 
+locust
