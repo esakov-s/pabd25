@@ -5,7 +5,7 @@ from dotenv import dotenv_values
 import boto3
 
 BUCKET_NAME = 'pabd25'
-YOUR_SURNAME = 'labintsev'
+YOUR_SURNAME = 'esakov'
 FILE_PATH = 'models/decision_tree_reg_1.pkl'
 os.makedirs('models', exist_ok=True)
 config = dotenv_values(".env")
