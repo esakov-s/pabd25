@@ -6,7 +6,7 @@ import boto3
 
 BUCKET_NAME = 'pabd25'
 YOUR_SURNAME = 'esakov'
-FILE_PATH = 'models/decision_tree_reg_1.pkl'
+LOCAL_FILE_PATH = 'models\catboost_model.pkl'
 os.makedirs('models', exist_ok=True)
 config = dotenv_values(".env")
 
@@ -29,6 +29,6 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-i', '--input',
                         help='Input data files to download from S3 storage',
-                        default=FILE_PATH)
+                        default=LOCAL_FILE_PATH)
     args = parser.parse_args()
     main(args)

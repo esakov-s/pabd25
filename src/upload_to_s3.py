@@ -6,7 +6,7 @@ import boto3
 
 BUCKET_NAME = 'pabd25'
 YOUR_SURNAME = 'esakov'
-LOCAL_FILE_PATH = ['models\decision_tree_reg_1.pkl']
+LOCAL_FILE_PATH = ['models\catboost_model.pkl']
 
 config = dotenv_values(".env")
 
