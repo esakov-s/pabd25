@@ -6,3 +6,4 @@ notebooks/.ipynb_checkpoints
 __pycache__/
 models
 .env
+catboost_info

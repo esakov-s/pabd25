@@ -23,11 +23,12 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error
 
 from models_functions.linear_regression import LinearRegressionModel
+from models_functions.catboost import CatBoostModel
 
 # Basic param values
 TEST_SIZE = 0.2
 N_ROOMS = 1  # just for the parsing step
-MODEL_NAME = "linear_regression_model_2.pkl"
+MODEL_NAME = "catboost_model.pkl"
 
 logging.basicConfig(
     filename="train.log",
@@ -54,7 +55,7 @@ def parse_cian(n_rooms=1):
         with_saving_csv=False,
         additional_settings={
             "start_page": 1,
-            "end_page": 2,
+            "end_page": 15,
             "object_type": "secondary",
         },
     )
@@ -209,12 +210,13 @@ if __name__ == "__main__":
     if args.parse_data:
         parse_cian(args.n_rooms)
     if args.restart_all_process:
-        for i in range(1, 5):
+        for i in range(1, args.n_rooms+1):
             parse_cian(n_rooms=i)
 
     X_train, y_train, X_test, y_test = preprocess_data(test_size)
 
-    # Model init
-    model = LinearRegressionModel(model_path=model_path, model_type="elasticnet")
+    # Model init (CatBoost variant)
+    cat_features = ["rooms_1", "rooms_2", "rooms_3", "first_floor", "last_floor"]
+    model = CatBoostModel(model_path=model_path, cat_features=cat_features, verbose=500)
     model.train(X_train, y_train)
     model.test(X_test, y_test)
