@@ -2,12 +2,10 @@ import datetime
 from pathlib import Path
 import pendulum
 import os
-import glob
 
 from airflow.sdk import dag, task
 import subprocess
 import sys
-
 
 
 def install_package(package_name):
@@ -94,10 +92,11 @@ def ProcessFlats():
         df.drop(columns=["floor", "rooms_count"], inplace=True)
 
         df.to_csv(root / "new_data.csv")
-    
+
     @task
     def download_model():
         pass
+
     @task
     def predict_new_data():
         pass
