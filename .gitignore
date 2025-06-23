@@ -1,6 +1,7 @@
 .venv
 data/raw
 data/processed
+dags/files
 *.log
 notebooks/.ipynb_checkpoints
 __pycache__/
