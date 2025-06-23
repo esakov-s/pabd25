@@ -4,11 +4,12 @@ from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 import numpy as np
 import joblib
 
+
 class CatBoostModel:
     def __init__(self, model_path, random_state=42, **kwargs):
         """
         Инициализация CatBoost модели.
-        
+
         Параметры:
         ----------
         **kwargs : dict
@@ -18,11 +19,11 @@ class CatBoostModel:
         self.best_score_ = None
         self.model_path = model_path
         self.random_state = random_state
-    
+
     def train(self, X_train, y_train, cv=5):
         """
         Обучение CatBoost с подбором гиперпараметров через GridSearch.
-        
+
         Параметры:
         ----------
         X_train : array-like или pd.DataFrame, форма (n_samples, n_features)
@@ -57,32 +58,32 @@ class CatBoostModel:
         print(f"Лучший R2: {self.best_score_}")
 
         joblib.dump(self.best_model_, self.model_path)
-    
+
     def test(self, X_test, y_test):
         """
         Оценка модели на тестовых данных.
-        
+
         Параметры:
         ----------
         X_test : array-like или pd.DataFrame, форма (n_samples, n_features)
         y_test : array-like, форма (n_samples,)
-        
+
         Возвращает:
         ----------
         metrics : dict
             Словарь с метриками: MSE, RMSE, MAE, R².
         """
         y_pred = self.best_model_.predict(X_test)
-        
+
         metrics = {
             'MSE': mean_squared_error(y_test, y_pred),
             'RMSE': np.sqrt(mean_squared_error(y_test, y_pred)),
             'MAE': mean_absolute_error(y_test, y_pred),
             'R2': r2_score(y_test, y_pred)
         }
-        
+
         print("Метрики на тестовых данных:")
         for name, value in metrics.items():
             print(f"{name}: {value:.4f}")
-        
+
         return metrics
