@@ -22,9 +22,12 @@ from sklearn.tree import DecisionTreeRegressor
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error
 
+from models_functions.linear_regression import LinearRegressionModel
+
+# Basic param values
 TEST_SIZE = 0.2
 N_ROOMS = 1  # just for the parsing step
-MODEL_NAME = "linear_regression_model.pkl"
+MODEL_NAME = "linear_regression_model_2.pkl"
 
 logging.basicConfig(
     filename="train.log",
@@ -103,6 +106,8 @@ def preprocess_data(test_size):
     train_df.to_csv("data/processed/train.csv")
     test_df.to_csv("data/processed/test.csv")
 
+    return train_df.drop(["price"], axis=1), train_df["price"], test_df.drop(["price"], axis=1), test_df["price"]
+
 
 def train_model(model_path):
     """Train model and save with MODEL_NAME"""
@@ -119,11 +124,13 @@ def train_model(model_path):
         ]
     ]
     y = train_df["price"]
+
+    # Инициализация обучения модели
     model = DecisionTreeRegressor(max_depth=5)
     model.fit(X.values, y)
 
+    # Сохранение в файл
     logging.info(f"Train {model} and save to {model_path}")
-
     joblib.dump(model, model_path)
 
 
@@ -190,6 +197,9 @@ if __name__ == "__main__":
     parser.add_argument(
         "-p", "--parse_data", help="Flag to parse new data", action="store_true"
     )
+    parser.add_argument(
+        "-r", "--restart_all_process", help="Flag to restart all proceess", action="store_true"
+    )
     args = parser.parse_args()
 
     test_size = float(args.split)
@@ -198,6 +208,13 @@ if __name__ == "__main__":
 
     if args.parse_data:
         parse_cian(args.n_rooms)
-    preprocess_data(test_size)
-    train_model(model_path)
-    test_model(model_path)
+    if args.restart_all_process:
+        for i in range(1, 5):
+            parse_cian(n_rooms=i)
+
+    X_train, y_train, X_test, y_test = preprocess_data(test_size)
+
+    # Model init
+    model = LinearRegressionModel(model_path=model_path, model_type="elasticnet")
+    model.train(X_train, y_train)
+    model.test(X_test, y_test)
