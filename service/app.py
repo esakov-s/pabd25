@@ -46,7 +46,7 @@ def verify_token(token):
 import joblib
 
 # Чтение модели 
-MODEL_NAME = "models/decision_tree_reg_1.pkl"
+MODEL_NAME = "models/linear_regression_model_2.pkl"
 
 
 # Маршрут для отображения формы

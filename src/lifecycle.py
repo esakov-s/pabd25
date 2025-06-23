@@ -23,12 +23,11 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error
 
 from models_functions.linear_regression import LinearRegressionModel
-from models_functions.catboost import CatBoostModel
 
 # Basic param values
 TEST_SIZE = 0.2
 N_ROOMS = 1  # just for the parsing step
-MODEL_NAME = "catboost_model.pkl"
+MODEL_NAME = "linear_regression_model_2.pkl"
 
 logging.basicConfig(
     filename="train.log",
@@ -215,8 +214,7 @@ if __name__ == "__main__":
 
     X_train, y_train, X_test, y_test = preprocess_data(test_size)
 
-    # Model init (CatBoost variant)
-    cat_features = ["rooms_1", "rooms_2", "rooms_3", "first_floor", "last_floor"]
-    model = CatBoostModel(model_path=model_path, cat_features=cat_features, verbose=500)
+    # Model init (regression variant)
+    model = LinearRegressionModel(model_path=model_path, model_type='elastic_net', verbose=500)
     model.train(X_train, y_train)
     model.test(X_test, y_test)
