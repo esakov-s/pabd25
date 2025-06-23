@@ -5,8 +5,8 @@ from dotenv import dotenv_values
 import boto3
 
 BUCKET_NAME = 'pabd25'
-YOUR_SURNAME = 'labintsev'
-LOCAL_FILE_PATH = ['models\decision_tree_reg_1.pkl']
+YOUR_SURNAME = 'esakov'
+LOCAL_FILE_PATH = ['models\catboost_model.pkl']
 
 config = dotenv_values(".env")
 
