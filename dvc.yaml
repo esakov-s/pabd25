@@ -1,8 +1,9 @@
 stages:
   preprocess:
-    cmd: python .\src\preprocess_data.py
+    cmd: python src/preprocess_data.py
     deps:
-    - .\src\preprocess_data.py
+    - src/preprocess_data.py
+    -  data/raw/raw_dataset.csv
   train:
     cmd: python .\src\train.py
     deps:

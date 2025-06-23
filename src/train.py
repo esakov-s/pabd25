@@ -14,11 +14,11 @@ import os
 import logging
 import joblib
 import pandas as pd
-from sklearn.tree import DecisionTreeRegressor
+from models_functions.catboost import CatBoostModel
 from sklearn.metrics import mean_squared_error
 
 
-MODEL_NAME = "decision_tree_reg_1.pkl"
+MODEL_NAME = "catboost_model.pkl"
 
 logging.basicConfig(
     filename="train.log",
@@ -32,7 +32,7 @@ logging.basicConfig(
 def train_model(model_path):
     """Train model and save with MODEL_NAME"""
     train_df = pd.read_csv("data/processed/train.csv")
-    X = train_df[
+    X_train = train_df[
         [
             "total_meters",
             "floors_count",
@@ -43,13 +43,15 @@ def train_model(model_path):
             "last_floor",
         ]
     ]
-    y = train_df["price"]
-    model = DecisionTreeRegressor(max_depth=5)
-    model.fit(X.values, y)
+    y_train = train_df["price"]
+   
+    cat_features = ["rooms_1", "rooms_2", "rooms_3", "first_floor", "last_floor"]
+    model = CatBoostModel(model_path=model_path, cat_features=cat_features, verbose=500)
+    model.train(X_train, y_train)
 
     logging.info(f"Train {model} and save to {model_path}")
 
-    joblib.dump(model, model_path)
+    joblib.dump(model.best_model_, model_path)
 
 
 if __name__ == "__main__":

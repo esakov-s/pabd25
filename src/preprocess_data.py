@@ -36,11 +36,7 @@ def preprocess_data(test_size):
     file_list = glob.glob(raw_data_path + "/*.csv")
     logging.info(f"Preprocess_data. Use files to train: {file_list}")
     df = pd.read_csv(file_list[0])
-    for i in range(1, len(file_list)):
-        data = pd.read_csv(file_list[i])
-        df_i = pd.DataFrame(data)
-        df = pd.concat([df, df_i], axis=0)
-
+    
     df["url_id"] = df["url"].map(lambda x: x.split("/")[-2])
     df = (
         df[["url_id", "total_meters", "floor", "floors_count", "rooms_count", "price"]]
@@ -70,6 +66,8 @@ def preprocess_data(test_size):
 
     train_df.to_csv("data/processed/train.csv")
     test_df.to_csv("data/processed/test.csv")
+
+    # return train_df.drop(["price"], axis=1), train_df["price"], test_df.drop(["price"], axis=1), test_df["price"]
 
 
 if __name__ == "__main__":

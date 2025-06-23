@@ -32,11 +32,11 @@ class CatBoostModel:
         cv : int, optional (default=5)
         """
         param_grid = {
-            "iterations": [500, 1000, 2000],
-            "depth": [4, 6, 8, 10],
+            "iterations": [500, 1000],
+            "depth": [4, 6, 8],
             "learning_rate": [0.01, 0.05, 0.1],
             "l2_leaf_reg": [1, 3, 5, 7],
-            "border_count": [32, 64, 128],
+            "border_count": [32, 64],
         }
 
         grid_search = GridSearchCV(

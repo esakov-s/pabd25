@@ -61,7 +61,8 @@ def parse_cian(n_rooms=1):
     )
     df = pd.DataFrame(data)
 
-    df.to_csv(csv_path, encoding="utf-8", index=False)
+    # df.to_csv(csv_path, encoding="utf-8", index=False)
+    return df
 
 
 def preprocess_data(test_size):
@@ -72,10 +73,6 @@ def preprocess_data(test_size):
     file_list = glob.glob(raw_data_path + "/*.csv")
     logging.info(f"Preprocess_data. Use files to train: {file_list}")
     df = pd.read_csv(file_list[0])
-    for i in range(1, len(file_list)):
-        data = pd.read_csv(file_list[i])
-        df_i = pd.DataFrame(data)
-        df = pd.concat([df, df_i], axis=0)
 
     df["url_id"] = df["url"].map(lambda x: x.split("/")[-2])
     df = (
@@ -210,13 +207,19 @@ if __name__ == "__main__":
     if args.parse_data:
         parse_cian(args.n_rooms)
     if args.restart_all_process:
+        df = pd.DataFrame()
         for i in range(1, args.n_rooms+1):
-            parse_cian(n_rooms=i)
+            new_df = parse_cian(n_rooms=i)
+            if df.shape[0] == 0:
+                df = new_df
+            else:
+                df = pd.concat([df, new_df], axis=1)
+        df.to_csv("data/raw/raw_dataset.csv")
 
-    X_train, y_train, X_test, y_test = preprocess_data(test_size)
+    # X_train, y_train, X_test, y_test = preprocess_data(test_size)
 
-    # Model init (CatBoost variant)
-    cat_features = ["rooms_1", "rooms_2", "rooms_3", "first_floor", "last_floor"]
-    model = CatBoostModel(model_path=model_path, cat_features=cat_features, verbose=500)
-    model.train(X_train, y_train)
-    model.test(X_test, y_test)
+    # # Model init (CatBoost variant)
+    # cat_features = ["rooms_1", "rooms_2", "rooms_3", "first_floor", "last_floor"]
+    # model = CatBoostModel(model_path=model_path, cat_features=cat_features, verbose=500)
+    # model.train(X_train, y_train)
+    # model.test(X_test, y_test)

@@ -6,12 +6,12 @@ import dotenv
 config = dotenv.dotenv_values(".env")
 token = config["APP_TOKEN"]
 
-HOST = 'http://51.250.30.25:8000'
+HOST = 'http://127.0.0.1:5000'
 
 def test_api_numbers():
     try:
         # Читаем данные из CSV файла
-        df = pd.read_csv('data/test/1_2025-06-18_20-40.csv')
+        df = pd.read_csv('data/raw/1_2025-06-23_12-59.csv')
         print(df.head())
         # Проверяем обязательные поля
         required_fields = ["total_meters", "rooms_count", "floors_count", "floor", "price"]
